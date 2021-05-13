@@ -1,0 +1,22 @@
+name: 'Octobay Rewards'
+description: 'Automate crypto payments to your contributors.'
+inputs:
+  rewards:
+    description: 'The configuration for what to pay when.'
+    required: true
+  seed-phrase:
+    desciption: 'The seed phrase for the wallet that pays contributors.'
+    required: true
+  label-authority:
+    desciption: 'Only this user can trigger reward payouts by labeling issues.'
+    required: false
+  rpc-node:
+    description: 'An ethereum RPC node.'
+    required: false
+    default: 'https://mainnet.rpc.fiews.io/v1/free'
+outputs:
+  tx:
+    description: 'The Ethereum transaction receipt.'
+runs:
+  using: 'node12'
+  main: 'index.js'

@@ -1,0 +1,24 @@
+{
+  "name": "rewards-action",
+  "version": "1.0.0",
+  "description": "A GitHub Action to automate crypto payments to your contributors.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Octobay/rewards-action.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Octobay/rewards-action/issues"
+  },
+  "homepage": "https://github.com/Octobay/rewards-action#readme",
+  "dependencies": {
+    "@actions/core": "^1.2.7",
+    "@actions/github": "^4.0.0"
+  }
+}
