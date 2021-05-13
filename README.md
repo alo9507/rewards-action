@@ -2,6 +2,8 @@
 
 A GitHub Action to automate crypto payments to your contributors.
 
+Currently only issue rewards (e.g. bug bounties) are possible but other feature will follow.
+
 ## Inputs
 
 ### `rewards`
@@ -36,6 +38,8 @@ The Ethereum transaction receipt.
 
 ## Example usage
 
+You need to set a wallet seed phrase as a [repository secret](https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository).
+
 ```yaml
 name: Octobay Rewards
 on:
@@ -54,7 +58,7 @@ jobs:
       uses: octobay/rewards-action@v1.0
       with:
         rpc-node: 'https://mainnet.rpc.fiews.io/v1/free' # default
-        seed-phrase: 'seed phrase for your rewards wallet'
+        seed-phrase: '${{ secrets.WALLET_SEED_PHRASE }}'
         label-authority: 'mktcode' # only this user can trigger rewards by labeling issues
         rewards:
           - labels: ['bug']
