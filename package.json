@@ -19,6 +19,7 @@
   "homepage": "https://github.com/Octobay/rewards-action#readme",
   "dependencies": {
     "@actions/core": "^1.2.7",
-    "@actions/github": "^4.0.0"
+    "@actions/github": "^4.0.0",
+    "web3": "^1.3.5"
   }
 }
