@@ -1,17 +1,19 @@
-import { getInput, setOutput, setFailed } from '@actions/core'
-import { context } from '@actions/github'
-import Web3 from 'web3'
-import HDWalletProvider from '@truffle/hdwallet-provider'
-import rewards from './.octobay.json'
+const fs = require('fs')
+const core = require('@actions/core')
+const github = require('@actions/github')
+const Web3 = require('web3')
+const HDWalletProvider = require('@truffle/hdwallet-provider')
 
 try {
-  const seedPhrase = getInput('seed-phrase')
-  const rpcNode = getInput('rpc-node')
+  const seedPhrase = core.getInput('seed-phrase')
+  const rpcNode = core.getInput('rpc-node')
 
+  const rewards = fs.readFileSync('./.octobay')
   console.log(rewards)
 
   // Get the JSON webhook payload for the event that triggered the workflow
-  const payload = JSON.stringify(context.payload, undefined, 2)
+  const payload = JSON.stringify(github.context.payload, undefined, 2)
+  console.log(payload)
   const web3 = new Web3(new HDWalletProvider(seedPhrase, rpcNode))
 
   web3.eth.sendTransaction({
@@ -19,17 +21,21 @@ try {
     to: '0x0cE5CD28e4CD4b3a4def3c9eE461809b2c5ee9E6',
     value: '1000000000000000'
   })
-  .on('transactionHash', (hash) => console.log(hash))
-  .on('receipt', (receipt) => console.log(receipt))
-  .on('confirmation', (confirmationNumber, receipt) => console.log(confirmationNumber, receipt))
-  .on('error', (e) => { throw e })
+  .on('transactionHash', function(hash){
+      console.log(hash)
+  })
+  .on('receipt', function(receipt){
+      console.log(receipt)
+  })
+  .on('confirmation', function(confirmationNumber, receipt){ })
+  .on('error', function(e) { throw e })
 
   // TODO:
   // - find issue author's eth address (via Octobay's UserAddressStorage or on GitHub (repo, description, gist, we'll see)
   // - send transaction
   let tx
 
-  setOutput("tx", tx)
+  core.setOutput("tx", tx)
 } catch (error) {
-  setFailed(error.message)
+  core.setFailed(error.message)
 }
