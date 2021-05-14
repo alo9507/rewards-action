@@ -19,12 +19,6 @@ const rewards = require('./.octobay.json')
       fromAccount = accounts[0]
     }
 
-    const tx = await sendTransaction(
-      fromAccount,
-      '0x0cE5CD28e4CD4b3a4def3c9eE461809b2c5ee9E6',
-      '1000000000000000'
-    )
-
     web3.eth.sendTransaction({
       from: fromAccount,
       to: '0x0cE5CD28e4CD4b3a4def3c9eE461809b2c5ee9E6',
