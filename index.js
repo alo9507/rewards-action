@@ -1,5 +1,6 @@
 const core = require('@actions/core')
 const github = require('@actions/github')
+const axios = require('axios')
 const Web3 = require('web3')
 const HDWalletProvider = require('@truffle/hdwallet-provider')
 const rewards = require('./.octobay.json')
@@ -12,6 +13,10 @@ const rewards = require('./.octobay.json')
 
     // Get the JSON webhook payload for the event that triggered the workflow
     const payload = JSON.stringify(github.context.payload, undefined, 2)
+    const user = payload.issue.user
+    const userConfig = await axios.get(`https://raw.githubusercontent.com/${user.login}/${user.login}/main/.octobay.json`)
+    console.log(userConfig)
+
     const walletProvider = new HDWalletProvider(seedPhrase, rpcNode)
     const web3 = new Web3(walletProvider)
     if (!fromAccount) {
