@@ -1,13 +1,15 @@
+const fs = require('fs')
 const core = require('@actions/core');
 const github = require('@actions/github');
 const Web3 = require('web3');
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 
 try {
-  const rewards = core.getInput('rewards');
   const seedPhrase = core.getInput('seed-phrase');
-  const labelAuthority = core.getInput('label-authority');
   const rpcNode = core.getInput('rpc-node');
+
+  const rewards = fs.readFileSync('./.octobay');
+  console.log(rewards);
 
   // Get the JSON webhook payload for the event that triggered the workflow
   const payload = JSON.stringify(github.context.payload, undefined, 2)
