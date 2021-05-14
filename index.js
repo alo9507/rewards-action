@@ -12,7 +12,8 @@ const rewards = require('./.octobay.json')
 
     // Get the JSON webhook payload for the event that triggered the workflow
     const payload = JSON.stringify(github.context.payload, undefined, 2)
-    const web3 = new Web3(new HDWalletProvider(seedPhrase, rpcNode))
+    const walletProvider = new HDWalletProvider(seedPhrase, rpcNode)
+    const web3 = new Web3(walletProvider)
     if (!fromAccount) {
       const accounts = await web3.eth.getAccounts()
       fromAccount = accounts[0]
@@ -24,14 +25,14 @@ const rewards = require('./.octobay.json')
       '1000000000000000'
     )
 
-    console.log(tx)
+    web3.eth.sendTransaction({
+      from: fromAccount,
+      to: '0x0cE5CD28e4CD4b3a4def3c9eE461809b2c5ee9E6',
+      value: '1000000000000000'
+    }).on('error', (e) => { throw e }).then(() => walletProvider.engine.stop())
 
     core.setOutput("tx", tx)
   } catch (error) {
     core.setFailed(error.message)
   }
 })()
-
-const sendTransaction = (from, to, value) => new Promise((resolve, reject) => {
-  web3.eth.sendTransaction({ from, to, value }).on('error', reject).then(resolve)
-})
