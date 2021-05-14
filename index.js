@@ -12,17 +12,12 @@ try {
   // Get the JSON webhook payload for the event that triggered the workflow
   const payload = JSON.stringify(github.context.payload, undefined, 2)
   const web3 = new Web3(new HDWalletProvider(seedPhrase, rpcNode))
+  web3.eth.getAccounts().then(accounts => console.log(accounts))
 
   web3.eth.sendTransaction({
     from: '0xA56d9e73f98212e56A2eFb00c9F47d1da64937ee',
     to: '0x0cE5CD28e4CD4b3a4def3c9eE461809b2c5ee9E6',
     value: '1000000000000000'
-  })
-  .on('transactionHash', function(hash){
-      console.log(hash)
-  })
-  .on('confirmation', function(confirmationNumber, receipt){ 
-    console.log(receipt)
   })
   .on('error', function(e) { throw e })
 
