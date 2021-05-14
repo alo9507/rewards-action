@@ -13,7 +13,7 @@ const rewards = require('./.octobay.json')
 
     // Get the JSON webhook payload for the event that triggered the workflow
     const payload = JSON.stringify(github.context.payload, undefined, 2)
-    console.log(payload)
+    console.log(payload.issue)
     // const user = payload.issue.user
     // const userConfig = await axios.get(`https://raw.githubusercontent.com/${user.login}/${user.login}/main/.octobay.json`)
     // console.log(userConfig)
