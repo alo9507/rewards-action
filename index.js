@@ -56,7 +56,7 @@ const repoConfig = require('./.octobay.json')
           walletProvider.engine.stop()
         }
       } else {
-        console.log(`No address found for user ${user.login}.`)
+        console.log(`No address found for user ${issueAuthor}.`)
         walletProvider.engine.stop()
       }
     } else {
