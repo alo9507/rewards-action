@@ -48,10 +48,12 @@ const repoConfig = require('./.octobay.json')
             from: fromAddress,
             to: userConfig.address,
             value: reward.value
-          }).on('error', (e) => { throw e }).then((tx) => {
+          }).on('error', (error) => { throw error }).then((tx) => {
             console.log(`Transaction Hash: ${tx.transactionHash}`)
             core.setOutput("tx", tx)
             walletProvider.engine.stop()
+          }).catch((error) => {
+            core.setFailed(error.message)
           })
         } else {
           console.log('No reward requirements are met.')
