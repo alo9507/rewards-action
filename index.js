@@ -43,6 +43,7 @@ const repoConfig = require('./.octobay.json')
         })
 
         if (reward) {
+          console.log(`Found reward: ${JSON.stringify(reward)}`)
           console.log(`Sending transaction... (From: ${fromAddress})`)
           web3.eth.sendTransaction({
             from: fromAddress,
