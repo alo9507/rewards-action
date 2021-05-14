@@ -8,7 +8,7 @@ const rewards = require('./.octobay.json')
   try {
     const seedPhrase = core.getInput('seed-phrase')
     const rpcNode = core.getInput('rpc-node')
-    const fromAccount = core.getInput('from-account')
+    let fromAccount = core.getInput('from-account')
 
     // Get the JSON webhook payload for the event that triggered the workflow
     const payload = JSON.stringify(github.context.payload, undefined, 2)
