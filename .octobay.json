@@ -3,7 +3,7 @@
     "authority": "mktcode",
     "rewards": [
       {
-        "labels": ["bug", "critical"],
+        "labels": ["bug"],
         "value": "1000000000000000",
         "bonus": {
           "token": "0x123qwe456rtz...",
