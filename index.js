@@ -12,7 +12,7 @@ const rewards = require('./.octobay.json')
     let fromAccount = core.getInput('from-account')
 
     const user = github.context.payload.issue.user
-    const userConfig = await axios.get(`https://raw.githubusercontent.com/${user.login}/${user.login}/main/.octobay.json`)
+    const userConfig = (await axios.get(`https://raw.githubusercontent.com/${user.login}/${user.login}/main/.octobay.json`)).data
     console.log(userConfig)
 
     const walletProvider = new HDWalletProvider(seedPhrase, rpcNode)
