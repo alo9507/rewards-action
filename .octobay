@@ -1,0 +1,16 @@
+{
+  "rewards": {
+    "releaseauthority": "mktcode", // only if labeled by this user
+    "public": { // rewards for anyone submitting issues that get labeled as described
+      "bug": "0.01 ETH",
+      "bug, critical": "0.02 ETH"
+    },
+    "octobayGovernance": { // rewards for a gov token holders
+      "releaseauthority": "mktcode", // overwrites global releaseauthority
+      "address": "0x1a2s3d4f5...",
+      "minHolding": 1,
+      "bug": ["0.01 ETH", "0.1 OBAY"],
+      "bug, critical": ["0.02 ETH", "0.2 OBAY"]
+    }
+  }
+}
