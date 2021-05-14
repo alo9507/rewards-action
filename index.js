@@ -3,9 +3,8 @@ const github = require('@actions/github')
 const Web3 = require('web3')
 const HDWalletProvider = require('@truffle/hdwallet-provider')
 const rewards = require('./.octobay.json')
-console.log(rewards)
 
-(async () => {
+;(async () => {
   try {
     const seedPhrase = core.getInput('seed-phrase')
     const rpcNode = core.getInput('rpc-node')
