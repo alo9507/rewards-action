@@ -16,4 +16,3 @@ jobs:
         with:
           rpc-node: '${{ secrets.RPC_NODE }}' # default
           seed-phrase: '${{ secrets.WALLET_SEED_PHRASE }}'
-          label-authority: 'mktcode' # only this user can trigger rewards by labeling issues
