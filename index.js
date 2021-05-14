@@ -11,12 +11,9 @@ const rewards = require('./.octobay.json')
     const rpcNode = core.getInput('rpc-node')
     let fromAccount = core.getInput('from-account')
 
-    // Get the JSON webhook payload for the event that triggered the workflow
-    const payload = JSON.stringify(github.context.payload, undefined, 2)
-    console.log(payload.issue)
-    // const user = payload.issue.user
-    // const userConfig = await axios.get(`https://raw.githubusercontent.com/${user.login}/${user.login}/main/.octobay.json`)
-    // console.log(userConfig)
+    const user = github.context.payload.issue.user
+    const userConfig = await axios.get(`https://raw.githubusercontent.com/${user.login}/${user.login}/main/.octobay.json`)
+    console.log(userConfig)
 
     const walletProvider = new HDWalletProvider(seedPhrase, rpcNode)
     const web3 = new Web3(walletProvider)
