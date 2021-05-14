@@ -1,16 +1,16 @@
 {
-  "rewards": {
-    "releaseauthority": "mktcode",
-    "public": {
-      "bug": "0.01 ETH",
-      "bug, critical": "0.02 ETH"
-    },
-    "octobayGovernance": {
-      "releaseauthority": "mktcode",
-      "address": "0x1a2s3d4f5...",
-      "minHolding": 1,
-      "bug": ["0.01 ETH", "0.1 OBAY"],
-      "bug, critical": ["0.02 ETH", "0.2 OBAY"]
-    }
+  "issues": {
+    "authority": "mktcode",
+    "rewards": [
+      {
+        "labels": ["bug", "critical"],
+        "value": "1000000000000000",
+        "bonus": {
+          "token": "0x123qwe456rtz...",
+          "minHolding": 100,
+          "multiplier": 1.5
+        }
+      }
+    ]
   }
 }
