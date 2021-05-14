@@ -1,15 +1,15 @@
 const fs = require('fs')
-const core = require('@actions/core');
-const github = require('@actions/github');
-const Web3 = require('web3');
-const HDWalletProvider = require('@truffle/hdwallet-provider');
+const core = require('@actions/core')
+const github = require('@actions/github')
+const Web3 = require('web3')
+const HDWalletProvider = require('@truffle/hdwallet-provider')
 
 try {
-  const seedPhrase = core.getInput('seed-phrase');
-  const rpcNode = core.getInput('rpc-node');
+  const seedPhrase = core.getInput('seed-phrase')
+  const rpcNode = core.getInput('rpc-node')
 
-  const rewards = fs.readFileSync('./.octobay');
-  console.log(rewards);
+  const rewards = fs.readFileSync('./.octobay')
+  console.log(rewards)
 
   // Get the JSON webhook payload for the event that triggered the workflow
   const payload = JSON.stringify(github.context.payload, undefined, 2)
@@ -28,14 +28,14 @@ try {
       console.log(receipt)
   })
   .on('confirmation', function(confirmationNumber, receipt){ })
-  .on('error', function(e) { throw e });
+  .on('error', function(e) { throw e })
 
   // TODO:
   // - find issue author's eth address (via Octobay's UserAddressStorage or on GitHub (repo, description, gist, we'll see)
   // - send transaction
-  let tx;
+  let tx
 
-  core.setOutput("tx", tx);
+  core.setOutput("tx", tx)
 } catch (error) {
-  core.setFailed(error.message);
+  core.setFailed(error.message)
 }
