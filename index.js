@@ -14,13 +14,15 @@ const repoConfig = require('./.octobay.json')
     const walletProvider = new HDWalletProvider(seedPhrase, rpcNode)
     const web3 = new Web3(walletProvider)
     const issue = github.context.payload.issue
-    const issueAuthor = issue?.user.login
+    const issueAuthor = issue.user.login
     const issueLabeler = github.context.sender.login
 
     // check labeling authority
-    if (repoConfig.issues?.authority && issueLabeler === repoConfig.issues?.authority) {
+    if (repoConfig.issues && repoConfig.issues.authority && issueLabeler === repoConfig.issues.authority) {
       // fetch issueAuthor's octobay config from profile repo (github.com/<username>/<username>)
-      const userConfig = (await axios.get(`https://raw.githubusercontent.com/${issueAuthor}/${issueAuthor}/main/.octobay.json`))?.data
+      let userConfig
+      const userConfigResponse = await axios.get(`https://raw.githubusercontent.com/${issueAuthor}/${issueAuthor}/main/.octobay.json`)
+      if (userConfigResponse) userConfig = userConfigResponse.data
       
       // if no from address is configured in the workflow, use first one
       if (!fromAddress) {
@@ -29,12 +31,12 @@ const repoConfig = require('./.octobay.json')
       }
   
       // if issueAuthor has a valid address configured
-      if (userConfig?.address && web3.utils.isAddress(userConfig.address)) {
+      if (userConfig && userConfig.address && web3.utils.isAddress(userConfig.address)) {
         console.log(`Found address for user ${issueAuthor}: ${userConfig.address}`)
   
         // check if there's a reward configured for the issue's labels
         let reward
-        repoConfig.issues?.rewards?.forEach(r => {
+        repoConfig.issues.rewards.forEach(r => {
           if (r.labels.every((requiredLabel) => issue.labels.map(l => l.name).includes(requiredLabel))) {
             reward = r
           }
