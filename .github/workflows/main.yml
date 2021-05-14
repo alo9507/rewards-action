@@ -1,0 +1,19 @@
+name: Octobay Rewards
+on:
+  # Triggered when you label issues.
+  issues:
+    types: [labeled]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  reward:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: octobay/rewards-action@main
+        with:
+          rpc-node: '${{ secrets.RPC_NODE }}' # default
+          seed-phrase: '${{ secrets.WALLET_SEED_PHRASE }}'
+          label-authority: 'mktcode' # only this user can trigger rewards by labeling issues
