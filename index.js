@@ -17,6 +17,8 @@ const repoConfig = require('./.octobay.json')
     const issueAuthor = issue.user.login
     const issueLabeler = github.context.payload.sender.login
 
+    console.log(`Issue "${issue.title}" was labeled "${issue.labels.map(l => l.name).join('", "')}" by ${issueLabeler}`)
+
     // check labeling authority
     if (repoConfig.issues && repoConfig.issues.authority && issueLabeler === repoConfig.issues.authority) {
       // fetch issueAuthor's octobay config from profile repo (github.com/<username>/<username>)
