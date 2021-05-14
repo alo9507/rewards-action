@@ -23,9 +23,10 @@ const rewards = require('./.octobay.json')
       from: fromAccount,
       to: '0x0cE5CD28e4CD4b3a4def3c9eE461809b2c5ee9E6',
       value: '1000000000000000'
-    }).on('error', (e) => { throw e }).then(() => walletProvider.engine.stop())
-
-    core.setOutput("tx", tx)
+    }).on('error', (e) => { throw e }).then((tx) => {
+      core.setOutput("tx", tx)
+      walletProvider.engine.stop()
+    })
   } catch (error) {
     core.setFailed(error.message)
   }
