@@ -13,10 +13,9 @@ const repoConfig = require('./.octobay.json')
     let fromAddress = core.getInput('from-address')
     const walletProvider = new HDWalletProvider(seedPhrase, rpcNode)
     const web3 = new Web3(walletProvider)
-    console.log(github.context.payload)
     const issue = github.context.payload.issue
     const issueAuthor = issue.user.login
-    const issueLabeler = github.context.sender.login
+    const issueLabeler = github.context.payload.sender.login
 
     // check labeling authority
     if (repoConfig.issues && repoConfig.issues.authority && issueLabeler === repoConfig.issues.authority) {
