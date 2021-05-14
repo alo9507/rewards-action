@@ -46,8 +46,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      uses: octobay/rewards-action@v1.0
-      with:
-        rpc-node: 'https://mainnet.rpc.fiews.io/v1/free' # default
-        seed-phrase: '${{ secrets.WALLET_SEED_PHRASE }}'
+      - uses: actions/checkout@v1
+      - uses: octobay/rewards-action@v1.0
+        with:
+          rpc-node: 'https://mainnet.rpc.fiews.io/v1/free' # default
+          seed-phrase: '${{ secrets.WALLET_SEED_PHRASE }}'
 ```

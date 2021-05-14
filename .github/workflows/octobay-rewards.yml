@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v1
       - uses: octobay/rewards-action@main
         with:
           rpc-node: '${{ secrets.RPC_NODE }}' # default
