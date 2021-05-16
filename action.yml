@@ -8,6 +8,10 @@ inputs:
     description: 'An ethereum RPC node.'
     required: false
     default: 'https://mainnet.rpc.fiews.io/v1/free'
+  subgraph:
+    description: 'The Subgraph to look up GitHub user\'s ETH addresses (if not configured in profile repo).'
+    required: false
+    default: 'octobay'
 outputs:
   tx:
     description: 'The Ethereum transaction receipt.'

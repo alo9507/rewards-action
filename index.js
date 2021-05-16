@@ -10,11 +10,12 @@ const repoConfig = require('./.octobay.json')
     // prepare
     const seedPhrase = core.getInput('seed-phrase')
     const rpcNode = core.getInput('rpc-node')
+    const subgraph = core.getInput('subgraph')
     let fromAddress = core.getInput('from-address')
     const walletProvider = new HDWalletProvider(seedPhrase, rpcNode)
     const web3 = new Web3(walletProvider)
     const issue = github.context.payload.issue
-    const issueAuthor = issue.user.login
+    const issueAuthor = issue.user
     const issueLabeler = github.context.payload.sender.login
 
     console.log(`Issue "${issue.title}" was labeled "${issue.labels.map(l => l.name).join('", "')}" by ${issueLabeler}`)
@@ -23,7 +24,7 @@ const repoConfig = require('./.octobay.json')
     if (repoConfig.issues && repoConfig.issues.authority && issueLabeler === repoConfig.issues.authority) {
       // fetch issueAuthor's octobay config from profile repo (github.com/<username>/<username>)
       let userConfig
-      const userConfigResponse = await axios.get(`https://raw.githubusercontent.com/${issueAuthor}/${issueAuthor}/main/.octobay.json`)
+      const userConfigResponse = await axios.get(`https://raw.githubusercontent.com/${issueAuthor.login}/${issueAuthor.login}/main/.octobay.json`)
       if (userConfigResponse) userConfig = userConfigResponse.data
       
       // if no from address is configured in the workflow, use first one
@@ -33,8 +34,27 @@ const repoConfig = require('./.octobay.json')
       }
   
       // if issueAuthor has a valid address configured
+      let toAddress
       if (userConfig && userConfig.address && web3.utils.isAddress(userConfig.address)) {
-        console.log(`Found address for user ${issueAuthor}: ${userConfig.address}`)
+        toAddress = userConfig.address
+      } else {
+        const userAddressResponse = await axios.post(`https://api.thegraph.com/subgraphs/name/octobay/${subgraph}`, {
+          query: `query($githubUserId:String!) {
+            user(id: $githubUserId) {
+              addresses {
+                address
+              }
+            }
+          }`,
+          variables: {
+            githubUserId: issueAuthor.node_id,
+          },
+        })
+        if (userAddressResponse) toAddress = userAddressResponse.data.user.addresses[0].address
+      }
+
+      if (toAddress) {
+        console.log(`Found address for user ${issueAuthor.login}: ${userConfig.address}`)
   
         // check if there's a reward configured for the issue's labels
         let reward
@@ -49,7 +69,7 @@ const repoConfig = require('./.octobay.json')
           console.log(`Sending transaction... (From: ${fromAddress})`)
           web3.eth.sendTransaction({
             from: fromAddress,
-            to: userConfig.address,
+            to: toAddress,
             value: reward.value
           }).on('error', (error) => { throw error }).then((tx) => {
             console.log(`Transaction Hash: ${tx.transactionHash}`)
@@ -63,7 +83,7 @@ const repoConfig = require('./.octobay.json')
           walletProvider.engine.stop()
         }
       } else {
-        console.log(`No address found for user ${issueAuthor}.`)
+        console.log(`No address found for user ${issueAuthor.login}.`)
         walletProvider.engine.stop()
       }
     } else {
