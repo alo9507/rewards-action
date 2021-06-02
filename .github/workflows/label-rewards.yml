@@ -10,7 +10,7 @@ jobs:
   reward:
     runs-on: ubuntu-latest
     # only allow mktcode to trigger rewards by labeling issues
-    if: ${{ github.context.payload.sender.login == 'mktcode' }}
+    if: ${{ github.event.sender.login == 'mktcode' }}
     steps:
       - uses: actions/checkout@v1
 
