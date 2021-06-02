@@ -8,6 +8,8 @@ env:
 
 jobs:
   user-config:
+    # only allow mktcode to trigger rewards by labeling issues
+    if: ${{ github.event.sender.login == 'mktcode' }}
     runs-on: ubuntu-latest
     outputs:
       address: ${{ steps.user-config.outputs.address }}
@@ -20,8 +22,6 @@ jobs:
           access-token: ${{ secrets.GITHUB_TOKEN }}
 
   reward:
-    # only allow mktcode to trigger rewards by labeling issues
-    if: ${{ github.event.sender.login == 'asdmktcode' }}
     runs-on: ubuntu-latest
     needs: [ user-config ]
     steps:
@@ -34,9 +34,9 @@ jobs:
         seed-phrase: '${{ secrets.WALLET_SEED_PHRASE }}'
         rpc-node: ${{ secrets.RPC_NODE }}
   
-  # add debug message when label was set by other then mktcode
+  # add message when label was set by someone other then mktcode
   skip:
-    if: ${{ github.event.sender.login != 'asdmktcode' }}
+    if: ${{ github.event.sender.login != 'mktcode' }}
     runs-on: ubuntu-latest
     steps:
       - run: echo "::warning::Only mktcode can trigger rewards by labeling issues."
