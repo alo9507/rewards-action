@@ -2,14 +2,15 @@
 
 A GitHub Action to automate crypto payments to your contributors.
 
-Currently only issue rewards (e.g. bug bounties) are possible but other feature will follow.
+Currently only issue rewards (e.g. bug bounties) are possible but other features will follow.
 
 ## How it works
 
-You need a wallet that holds the reserves you want to use to reward contributors.
-You configure the action to trigger when you label issues and you define what labels lead to what reward.
-If the user who created the issue has a verified ETH address on Octobay or in the GitHub bio, the action will use your wallet to send the configured amount to that address. For a simple bug bounty programm for example you can configure the action to send a fixed amount of ETH to an issue's author when you add the label 'critical-bug'.
-
+1. You need a wallet that holds the reserves you want to use to reward contributors.
+2. You add a workflow to your repository and pass it the key to a wallet as a repository secret. (Yes we're putting a lot of trust on Github here. duh.)
+3. You add a `.octobay.json` to your repository, configuring the rewards.
+4. Contributors need to add a `.octobay.json` to their user repository (`github.com/<username>/<username>`), configuring an Ethereum address.
+5. Contributors without an address configured in a `.octobay.json`, will be guided be the GitHub action commenting on the issue, giving them a chance to add the configure an address and trigger the workflow again by replying to the comment.
 
 ## Inputs
 
