@@ -10,7 +10,6 @@ const repoConfig = require('./.octobay.json')
     // prepare
     const seedPhrase = core.getInput('seed-phrase')
     const rpcNode = core.getInput('rpc-node')
-    const subgraph = core.getInput('subgraph')
     let fromAddress = core.getInput('from-address')
     const walletProvider = new HDWalletProvider(seedPhrase, rpcNode)
     const web3 = new Web3(walletProvider)
