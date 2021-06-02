@@ -11,7 +11,7 @@ jobs:
   reward:
     runs-on: ubuntu-latest
     # only allow mktcode to trigger rewards by labeling issues
-    if: env.ISSUE_LABELER == 'mktcode'
+    if: ${{ env.ISSUE_LABELER == 'mktcode' }}
     steps:
       - uses: actions/checkout@v1
 
