@@ -5,13 +5,12 @@ on:
 
 env:
   ISSUE_AUTHOR: ${{ github.event.issue.user.login }}
-  ISSUE_LABELER: ${{ github.context.payload.sender.login }}
 
 jobs:
   reward:
     runs-on: ubuntu-latest
     # only allow mktcode to trigger rewards by labeling issues
-    if: ${{ env.ISSUE_LABELER == 'mktcode' }}
+    if: github.context.payload.sender.login == 'mktcode'
     steps:
       - uses: actions/checkout@v1
 
