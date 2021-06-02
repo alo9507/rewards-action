@@ -7,7 +7,7 @@ Currently only issue rewards (e.g. bug bounties) are possible but other features
 ## How it works
 
 1. You need a wallet that holds the reserves you want to use to reward contributors.
-2. You add a workflow to your repository and pass it the key to a wallet as a repository secret. (Yes we're putting a lot of trust on Github here. duh.)
+2. You add a workflow to your repository and pass it the key to a wallet as a repository secret. (Yes we're putting a lot of trust on Github here.)
 3. You add a `.octobay.json` to your repository, configuring the rewards.
 4. Contributors need to add a `.octobay.json` to their user repository (`github.com/<username>/<username>`), configuring an Ethereum address.
 5. Contributors without an address configured in a `.octobay.json`, will be guided be the GitHub action commenting on the issue, giving them a chance to add the configure an address and trigger the workflow again by replying to the comment.
