@@ -39,4 +39,4 @@ jobs:
     if: ${{ github.event.sender.login != 'asdmktcode' }}
     runs-on: ubuntu-latest
     steps:
-      - run: "echo ::debug::Only mktcode can trigger rewards by labeling issues."
+      - run: echo "::warning::Only mktcode can trigger rewards by labeling issues."
