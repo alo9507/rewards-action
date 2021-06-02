@@ -1,0 +1,30 @@
+name: Octobay Rewards
+on:
+  issues:
+    types: [labeled]
+
+env:
+  ISSUE_AUTHOR: ${{ github.event.issue.user.login }}
+  ISSUE_LABELER: ${{ github.context.payload.sender.login }}
+
+jobs:
+  reward:
+    runs-on: ubuntu-latest
+    # only allow mktcode to trigger rewards by labeling issues
+    if: env.ISSUE_LABELER == 'mktcode'
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Get config for ${{ env.ISSUE_AUTHOR }}
+        uses: octobay/get-user-config-action@v1
+        id: user-config
+        with:
+          username: ${{ env.ISSUE_AUTHOR }}
+          access-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Send reward
+        uses: octobay/rewards-action@v1
+        if: steps.user-config.outputs.address
+        with:
+          to-address: ${{ steps.user-config.outputs.address }}
+          seed-phrase: '${{ secrets.WALLET_SEED_PHRASE }}'

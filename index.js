@@ -1,77 +1,69 @@
 const core = require('@actions/core')
 const github = require('@actions/github')
-const axios = require('axios')
 const Web3 = require('web3')
 const HDWalletProvider = require('@truffle/hdwallet-provider')
 const repoConfig = require('./.octobay.json')
 
-;(async () => {
+async function run() {
   try {
-    // prepare
+    // get info from context
+    const issue = github.context.payload.issue
+    const addedLabel = github.context.payload.label.name
+    core.info(`Issue "${issue.title}" was labeled "${addedLabel}"`)
+
+    // check repo's rewards config
+    if (!repoConfig.labelRewards) {
+      throw Error('No rewards configured.')
+    }
+
+    // set up wallet
     const seedPhrase = core.getInput('seed-phrase')
     const rpcNode = core.getInput('rpc-node')
-    let fromAddress = core.getInput('from-address')
     const walletProvider = new HDWalletProvider(seedPhrase, rpcNode)
     const web3 = new Web3(walletProvider)
-    const issue = github.context.payload.issue
-    const issueAuthor = issue.user
-    const issueLabeler = github.context.payload.sender.login
 
-    core.info(`Issue "${issue.title}" was labeled "${issue.labels.map(l => l.name).join('", "')}" by ${issueLabeler}`)
+    // set addresses
+    const toAddress = core.getInput('from-address')
+    let fromAddress = core.getInput('from-address')
+    // if no from address is configured in the workflow, use first one derived from the seed phrase
+    if (!fromAddress) {
+      const accounts = await web3.eth.getAccounts()
+      fromAddress = accounts[0]
+    }
 
-    // check labeling authority
-    if (repoConfig.issues && repoConfig.issues.authority && issueLabeler === repoConfig.issues.authority) {
-      // fetch issueAuthor's octobay config from profile repo (github.com/<username>/<username>)
-      let userConfig
-      const userConfigResponse = await axios.get(`https://raw.githubusercontent.com/${issueAuthor.login}/${issueAuthor.login}/main/.octobay.json`)
-      if (userConfigResponse) userConfig = userConfigResponse.data
-      
-      // if no from address is configured in the workflow, use first one
-      if (!fromAddress) {
-        const accounts = await web3.eth.getAccounts()
-        fromAddress = accounts[0]
-      }
-  
-      // if issueAuthor has a valid address configured
-      let toAddress
-      if (userConfig && userConfig.address && web3.utils.isAddress(userConfig.address)) {
-        core.info(`Found address for user ${issueAuthor.login}: ${userConfig.address}`)
-  
-        // check if there's a reward configured for the issue's labels
-        let reward
-        repoConfig.issues.rewards.forEach(r => {
-          if (r.labels.every((requiredLabel) => issue.labels.map(l => l.name).includes(requiredLabel))) {
-            reward = r
-          }
-        })
+    // check addresses
+    if (!web3.utils.isAddress(toAddress)) {
+      throw Error(`Receiving address (${toAddress}) is not a valid Ethereum address.`)
+    }
+    if (!web3.utils.isAddress(fromAddress)) {
+      throw Error(`Sending address (${fromAddress}) is not a valid Ethereum address.`)
+    }
 
-        if (reward) {
-          core.info(`Found reward: ${JSON.stringify(reward)}`)
-          core.info(`Sending transaction... (From: ${fromAddress})`)
-          web3.eth.sendTransaction({
-            from: fromAddress,
-            to: userConfig.address,
-            value: reward.value
-          }).on('error', (error) => { throw error }).then((tx) => {
-            core.info(`Transaction Hash: ${tx.transactionHash}`)
-            core.setOutput("tx", tx)
-            walletProvider.engine.stop()
-          }).catch((error) => {
-            core.setFailed(error.message)
-          })
-        } else {
-          core.info('No reward requirements are met.')
-          walletProvider.engine.stop()
-        }
-      } else {
-        core.info(`No address found for user ${issueAuthor.login}.`)
+    // get label reward
+    const reward = repoConfig.labelRewards.labels.find(label => label.name === addedLabel)
+
+    if (reward) {
+      core.info(`Found reward: ${JSON.stringify(reward)}`)
+      core.info(`Sending transaction... (From: ${fromAddress})`)
+      web3.eth.sendTransaction({
+        from: fromAddress,
+        to: toAddress,
+        value: reward.value
+      }).on('error', (error) => { throw error }).then((tx) => {
+        core.info(`Transaction Hash: ${tx.transactionHash}`)
+        core.setOutput("transactionHash", tx.transactionHash)
+      }).catch((error) => {
+        core.setFailed(error.message)
+      }).finally(() => {
         walletProvider.engine.stop()
-      }
+      })
     } else {
-      core.info(`Configured authority "${repoConfig.issues.authority}" does not match "${issueLabeler}" who labeled the issue.`)
+      core.info(`No reward for label ${addedLabel} found.`)
       walletProvider.engine.stop()
     }
   } catch (error) {
     core.setFailed(error.message)
   }
-})()
+}
+
+run()

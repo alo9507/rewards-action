@@ -1,16 +1,12 @@
 {
-  "issues": {
-    "authority": "mktcode",
-    "rewards": [
-      {
-        "labels": ["bug"],
-        "value": "1000000000000000",
-        "bonus": {
-          "token": "0x123qwe456rtz...",
-          "minHolding": 100,
-          "multiplier": 1.5
-        }
-      }
-    ]
-  }
+  "labelRewards": [
+    {
+      "name": "critical-bug",
+      "value": "1000000000000000"
+    },
+    {
+      "name": "awesome-idea",
+      "value": "1000000000000000"
+    }
+  ]
 }

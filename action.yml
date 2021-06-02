@@ -1,6 +1,12 @@
 name: 'Octobay Rewards'
 description: 'Automate crypto payments to your contributors.'
 inputs:
+  to-address:
+    desciption: 'The Ethereum address of the receiving user. (Can be retrieved using octobay/get-user-config-action.)'
+    required: true
+  from-address:
+    desciption: 'The Ethereum address to send the rewards from. Defaults to the first address derived from the provided seed phrase.'
+    required: false
   seed-phrase:
     desciption: 'The seed phrase for the wallet that pays contributors.'
     required: true
