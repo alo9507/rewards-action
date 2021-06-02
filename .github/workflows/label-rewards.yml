@@ -27,3 +27,4 @@ jobs:
         with:
           to-address: ${{ steps.user-config.outputs.address }}
           seed-phrase: '${{ secrets.WALLET_SEED_PHRASE }}'
+          rpc-node: ${{ secrets.RPC_NODE }}

@@ -12,8 +12,7 @@ inputs:
     required: true
   rpc-node:
     description: 'An ethereum RPC node.'
-    required: false
-    default: 'https://mainnet.rpc.fiews.io/v1/free'
+    required: true
 outputs:
   tx:
     description: 'The Ethereum transaction receipt.'
