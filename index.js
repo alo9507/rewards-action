@@ -33,9 +33,11 @@ async function run() {
 
     // check addresses
     if (!web3.utils.isAddress(toAddress)) {
+      walletProvider.engine.stop()
       throw Error(`Receiving address (${toAddress}) is not a valid Ethereum address.`)
     }
     if (!web3.utils.isAddress(fromAddress)) {
+      walletProvider.engine.stop()
       throw Error(`Sending address (${fromAddress}) is not a valid Ethereum address.`)
     }
 
