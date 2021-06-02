@@ -7,13 +7,11 @@ env:
   ISSUE_AUTHOR: ${{ github.event.issue.user.login }}
 
 jobs:
-  reward:
+  user-config:
     runs-on: ubuntu-latest
-    # only allow mktcode to trigger rewards by labeling issues
-    if: ${{ github.event.sender.login == 'mktcode' }}
+    outputs:
+      address: ${{ steps.user-config.outputs.address }}
     steps:
-      - uses: actions/checkout@v1
-
       - name: Get config for ${{ env.ISSUE_AUTHOR }}
         uses: octobay/get-user-config-action@v1
         id: user-config
@@ -21,10 +19,24 @@ jobs:
           username: ${{ env.ISSUE_AUTHOR }}
           access-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Send reward
-        uses: octobay/rewards-action@v1
-        if: steps.user-config.outputs.address
-        with:
-          to-address: ${{ steps.user-config.outputs.address }}
-          seed-phrase: '${{ secrets.WALLET_SEED_PHRASE }}'
-          rpc-node: ${{ secrets.RPC_NODE }}
+  reward:
+    # only allow mktcode to trigger rewards by labeling issues
+    if: ${{ github.event.sender.login == 'mktcode' }}
+    runs-on: ubuntu-latest
+    needs: [ user-config ]
+    steps:
+    - uses: actions/checkout@v1
+    - name: Send reward
+      uses: octobay/rewards-action@v1
+      if: steps.user-config.outputs.address
+      with:
+        to-address: ${{ needs.user-conf.outputs.address }}
+        seed-phrase: '${{ secrets.WALLET_SEED_PHRASE }}'
+        rpc-node: ${{ secrets.RPC_NODE }}
+  
+  # add debug message when label was set by other then mktcode
+  skip:
+    if: ${{ github.event.sender.login != 'mktcode' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: "echo ::debug::Only mktcode can trigger rewards by labeling issues."
