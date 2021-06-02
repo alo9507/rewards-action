@@ -23,7 +23,7 @@ async function run() {
     const web3 = new Web3(walletProvider)
 
     // set addresses
-    const toAddress = core.getInput('from-address')
+    const toAddress = core.getInput('to-address')
     let fromAddress = core.getInput('from-address')
     // if no from address is configured in the workflow, use first one derived from the seed phrase
     if (!fromAddress) {
