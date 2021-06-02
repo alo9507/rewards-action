@@ -19,4 +19,4 @@ outputs:
     description: 'The Ethereum transaction receipt.'
 runs:
   using: 'node12'
-  main: 'index.js'
+  main: 'dist/index.js'
