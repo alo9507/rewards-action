@@ -36,24 +36,6 @@ const repoConfig = require('./.octobay.json')
       // if issueAuthor has a valid address configured
       let toAddress
       if (userConfig && userConfig.address && web3.utils.isAddress(userConfig.address)) {
-        toAddress = userConfig.address
-      } else {
-        const userAddressResponse = await axios.post(`https://api.thegraph.com/subgraphs/name/octobay/${subgraph}`, {
-          query: `query($githubUserId:String!) {
-            user(id: $githubUserId) {
-              addresses {
-                address
-              }
-            }
-          }`,
-          variables: {
-            githubUserId: issueAuthor.node_id,
-          },
-        })
-        if (userAddressResponse) toAddress = userAddressResponse.data.user.addresses[0].address
-      }
-
-      if (toAddress) {
         console.log(`Found address for user ${issueAuthor.login}: ${userConfig.address}`)
   
         // check if there's a reward configured for the issue's labels
@@ -69,7 +51,7 @@ const repoConfig = require('./.octobay.json')
           console.log(`Sending transaction... (From: ${fromAddress})`)
           web3.eth.sendTransaction({
             from: fromAddress,
-            to: toAddress,
+            to: userConfig.address,
             value: reward.value
           }).on('error', (error) => { throw error }).then((tx) => {
             console.log(`Transaction Hash: ${tx.transactionHash}`)
