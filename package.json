@@ -4,24 +4,34 @@
   "description": "A GitHub Action to automate crypto payments to your contributors.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint .",
+    "prepare": "ncc build index.js -o dist --source-map --license licenses.txt",
+    "all": "npm run lint && npm run prepare"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Octobay/rewards-action.git"
+    "url": "git+https://github.com/octobay/rewards-action.git"
   },
-  "keywords": [],
+  "keywords": [
+    "GitHub",
+    "Actions",
+    "JavaScript"
+  ],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Octobay/rewards-action/issues"
+    "url": "https://github.com/octobay/rewards-action/issues"
   },
-  "homepage": "https://github.com/Octobay/rewards-action#readme",
+  "homepage": "https://github.com/octobay/rewards-action#readme",
   "dependencies": {
-    "@actions/core": "^1.2.7",
-    "@actions/github": "^4.0.0",
+    "@actions/core": "^1.3.0",
+    "@actions/github": "^5.0.0",
     "@truffle/hdwallet-provider": "^1.4.0",
     "axios": "^0.21.1",
     "web3": "^1.3.5"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.28.5",
+    "eslint": "^7.27.0"
   }
 }
