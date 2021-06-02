@@ -28,11 +28,13 @@ jobs:
     - uses: actions/checkout@v1
     - name: Send reward
       uses: octobay/rewards-action@v1
-      if: ${{ needs.user-conf.outputs.address }}
+      if: ${{ needs.user-config.outputs.address }}
       with:
-        to-address: ${{ needs.user-conf.outputs.address }}
+        to-address: ${{ needs.user-config.outputs.address }}
         seed-phrase: '${{ secrets.WALLET_SEED_PHRASE }}'
         rpc-node: ${{ secrets.RPC_NODE }}
+    - if: ${{ !needs.user-config.outputs.address }}
+      run: echo "::warning::User has a config file (.octobay.json) but no valid address configured."
   
   # add message when label was set by someone other then mktcode
   skip:
