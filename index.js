@@ -18,7 +18,7 @@ const repoConfig = require('./.octobay.json')
     const issueAuthor = issue.user
     const issueLabeler = github.context.payload.sender.login
 
-    console.log(`Issue "${issue.title}" was labeled "${issue.labels.map(l => l.name).join('", "')}" by ${issueLabeler}`)
+    core.info(`Issue "${issue.title}" was labeled "${issue.labels.map(l => l.name).join('", "')}" by ${issueLabeler}`)
 
     // check labeling authority
     if (repoConfig.issues && repoConfig.issues.authority && issueLabeler === repoConfig.issues.authority) {
@@ -36,7 +36,7 @@ const repoConfig = require('./.octobay.json')
       // if issueAuthor has a valid address configured
       let toAddress
       if (userConfig && userConfig.address && web3.utils.isAddress(userConfig.address)) {
-        console.log(`Found address for user ${issueAuthor.login}: ${userConfig.address}`)
+        core.info(`Found address for user ${issueAuthor.login}: ${userConfig.address}`)
   
         // check if there's a reward configured for the issue's labels
         let reward
@@ -47,29 +47,29 @@ const repoConfig = require('./.octobay.json')
         })
 
         if (reward) {
-          console.log(`Found reward: ${JSON.stringify(reward)}`)
-          console.log(`Sending transaction... (From: ${fromAddress})`)
+          core.info(`Found reward: ${JSON.stringify(reward)}`)
+          core.info(`Sending transaction... (From: ${fromAddress})`)
           web3.eth.sendTransaction({
             from: fromAddress,
             to: userConfig.address,
             value: reward.value
           }).on('error', (error) => { throw error }).then((tx) => {
-            console.log(`Transaction Hash: ${tx.transactionHash}`)
+            core.info(`Transaction Hash: ${tx.transactionHash}`)
             core.setOutput("tx", tx)
             walletProvider.engine.stop()
           }).catch((error) => {
             core.setFailed(error.message)
           })
         } else {
-          console.log('No reward requirements are met.')
+          core.info('No reward requirements are met.')
           walletProvider.engine.stop()
         }
       } else {
-        console.log(`No address found for user ${issueAuthor.login}.`)
+        core.info(`No address found for user ${issueAuthor.login}.`)
         walletProvider.engine.stop()
       }
     } else {
-      console.log(`Configured authority "${repoConfig.issues.authority}" does not match "${issueLabeler}" who labeled the issue.`)
+      core.info(`Configured authority "${repoConfig.issues.authority}" does not match "${issueLabeler}" who labeled the issue.`)
       walletProvider.engine.stop()
     }
   } catch (error) {
