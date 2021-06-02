@@ -21,7 +21,7 @@ jobs:
 
   reward:
     # only allow mktcode to trigger rewards by labeling issues
-    if: ${{ github.event.sender.login == 'mktcode' }}
+    if: ${{ github.event.sender.login == 'asdmktcode' }}
     runs-on: ubuntu-latest
     needs: [ user-config ]
     steps:
@@ -36,7 +36,7 @@ jobs:
   
   # add debug message when label was set by other then mktcode
   skip:
-    if: ${{ github.event.sender.login != 'mktcode' }}
+    if: ${{ github.event.sender.login != 'asdmktcode' }}
     runs-on: ubuntu-latest
     steps:
       - run: "echo ::debug::Only mktcode can trigger rewards by labeling issues."
