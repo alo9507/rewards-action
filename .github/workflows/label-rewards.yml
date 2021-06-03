@@ -12,7 +12,7 @@ jobs:
     if: ${{ github.event.sender.login == 'mktcode' }}
     runs-on: ubuntu-latest
     outputs:
-      address: ${{ steps.user-config.outputs.address }}
+      address: ${{ steps.get-user-config.outputs.address }}
     steps:
       - name: Get config for ${{ env.ISSUE_AUTHOR }}
         uses: octobay/get-user-config-action@v1
