@@ -41,7 +41,7 @@ jobs:
   
   comment_success:
     name: Commenting on success
-    if: ${{ !needs.reward.outputs.transactionHash }}
+    if: ${{ needs.reward.outputs.transactionHash }}
     runs-on: ubuntu-latest
     needs: [ reward ]
     steps:
