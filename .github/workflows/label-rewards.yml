@@ -7,7 +7,7 @@ env:
   ISSUE_AUTHOR: ${{ github.event.issue.user.login }}
 
 jobs:
-  user-config:
+  get-user-config:
     # only allow mktcode to trigger rewards by labeling issues
     if: ${{ github.event.sender.login == 'mktcode' }}
     runs-on: ubuntu-latest
@@ -16,25 +16,49 @@ jobs:
     steps:
       - name: Get config for ${{ env.ISSUE_AUTHOR }}
         uses: octobay/get-user-config-action@v1
-        id: user-config
+        id: get-user-config
         with:
           username: ${{ env.ISSUE_AUTHOR }}
           access-token: ${{ secrets.GITHUB_TOKEN }}
 
   reward:
     runs-on: ubuntu-latest
-    needs: [ user-config ]
+    needs: [ get-user-config ]
     steps:
     - uses: actions/checkout@v1
     - name: Send reward
       uses: octobay/rewards-action@v1
-      if: ${{ needs.user-config.outputs.address }}
+      if: ${{ needs.get-user-config.outputs.address }}
       with:
-        to-address: ${{ needs.user-config.outputs.address }}
+        to-address: ${{ needs.get-user-config.outputs.address }}
         seed-phrase: '${{ secrets.WALLET_SEED_PHRASE }}'
         rpc-node: ${{ secrets.RPC_NODE }}
-    - if: ${{ !needs.user-config.outputs.address }}
+    - if: ${{ !needs.get-user-config.outputs.address }}
       run: echo "::warning::User has a config file (.octobay.json) but no valid address configured."
+  
+  # TODO: comment when done, and check to prevent accidental multiple payments
+  # comment if no address is present
+  comment_create_config:
+    name: Commenting on Issue (Create Octobay Config)
+    if: ${{ !needs.get-user-config.outputs.address }}
+    runs-on: ubuntu-latest
+    needs: [ get-user-config ]
+    steps:
+      - name: Create comment
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            ${{ ISSUE_AUTHOR }}, you need to configure an Ethereum address in order to receive a reward for creating this helpful issue.
+            Create a [.octobay.json](https://github.com/${{ ISSUE_AUTHOR }}/${{ ISSUE_AUTHOR }}/new/main?filename=.octobay.json) in your profile repository.
+            ```json
+            {
+              "address": "0x27711f9c07230632F2EE1A21a967a9AC4729E520"
+            }
+            ```
+            You don't have a profile repository? [Create one!](https://github.com/new)
+            
+            Done? React with 👍🏻 on this comment to get your reward.
   
   # add message when label was set by someone other then mktcode
   skip:
