@@ -34,32 +34,10 @@ Currently only issue rewards (e.g. bug bounties) are possible but other features
 
 ## Outputs
 
-### `tx`
+### `transactionHash`
 
-The Ethereum transaction receipt.
+The Ethereum transaction hash.
 
 ## Example usage
 
-You need to set a wallet seed phrase as a [repository secret](https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository).
-
-```yaml
-name: Octobay Rewards
-on:
-  # Triggered when you label issues.
-  issues:
-    types: [labeled]
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-jobs:
-  reward:
-    runs-on: ubuntu-latest
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v1
-      - uses: octobay/rewards-action@v1.0
-        with:
-          rpc-node: 'https://mainnet.rpc.fiews.io/v1/free' # default
-          seed-phrase: '${{ secrets.WALLET_SEED_PHRASE }}'
-```
+See our [label-rewards.yml](.github/workflows/label-rewards.yml)
