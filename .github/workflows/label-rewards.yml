@@ -36,30 +36,17 @@ jobs:
     - if: ${{ !needs.get-user-config.outputs.address }}
       run: echo "::warning::User has a config file (.octobay.json) but no valid address configured."
   
-  # TODO: comment when done, and check to prevent accidental multiple payments
-  # comment if no address is present
-  comment_create_config:
-    name: Commenting on Issue (Create Octobay Config)
-    if: ${{ !needs.get-user-config.outputs.address }}
+  comment_success:
+    name: Commenting on success
     runs-on: ubuntu-latest
-    needs: [ get-user-config ]
+    needs: [ reward ]
     steps:
       - name: Create comment
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.issue.number }}
-          body: |
-            ${{ env.ISSUE_AUTHOR }}, you need to configure an Ethereum address in order to receive a reward for creating this helpful issue.
-            Create a [.octobay.json](https://github.com/${{ env.ISSUE_AUTHOR }}/${{ env.ISSUE_AUTHOR }}/new/main?filename=.octobay.json) in your profile repository.
-            ```json
-            {
-              "address": "0xa1b2c3..."
-            }
-            ```
-            You don't have a profile repository? [Create one!](https://github.com/new)
-            
-            Done? Comment "Done!" to get your reward. (Actually... write whatever you want. Just leave a comment.)
-  
+          body: "Thank you for reporting this issue. We have just sent you 0.001 ETH."
+
   # add message when label was set by someone other then mktcode
   skip:
     if: ${{ github.event.sender.login != 'mktcode' }}
