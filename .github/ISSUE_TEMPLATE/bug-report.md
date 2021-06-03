@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Create a bug report and earn 0.01 ETH if we deem it worthy and label it "critical-bug"
+about: Create a bug report and get 0.01 ETH if it's worrying us enough to label it "critical-bug".
 title: ''
 labels: ''
 assignees: ''
