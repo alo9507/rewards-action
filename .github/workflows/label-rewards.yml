@@ -53,12 +53,12 @@ jobs:
             Create a [.octobay.json](https://github.com/${{ env.ISSUE_AUTHOR }}/${{ env.ISSUE_AUTHOR }}/new/main?filename=.octobay.json) in your profile repository.
             ```json
             {
-              "address": "0x27711f9c07230632F2EE1A21a967a9AC4729E520"
+              "address": "0xa1b2c3..."
             }
             ```
             You don't have a profile repository? [Create one!](https://github.com/new)
             
-            Done? React with 👍🏻 on this comment to get your reward.
+            Done? Comment "Done!" to get your reward. (Actually... write whatever you want. Just leave a comment.)
   
   # add message when label was set by someone other then mktcode
   skip:
