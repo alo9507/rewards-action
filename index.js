@@ -42,7 +42,7 @@ async function run() {
     }
 
     // get label reward
-    const reward = repoConfig.labelRewards.labels.find(label => label.name === addedLabel)
+    const reward = repoConfig.labelRewards.find(label => label.name === addedLabel)
 
     if (reward) {
       core.info(`Found reward: ${JSON.stringify(reward)}`)
