@@ -1,6 +1,6 @@
 ---
 name: Idea or Feedback
-about: Share ideas and feedback
+about: Share your ideas and convince us of their awesomeness, so we'll label it "awesome-idea" and you'll get 0.01 ETH
 title: ''
 labels: ''
 assignees: ''
