@@ -8,11 +8,13 @@ assignees: ''
 ---
 
 <!--
-We support Octobay Rewards! Configure an Ethereum address in your profile repository (github.com/<username>/<usernam>) by adding a .octobay.json with the following content:
+We support Octobay Rewards! Configure an Ethereum address in your profile repository (github.com/<username>/<username>) by adding a .octobay.json with the following content:
 
 {
   "address": "your ETH address"
 }
+
+If we accept your bug report and label it "critical-bug" you will automatically receive 0.001 ETH.
 -->
 
 **Describe the bug**
