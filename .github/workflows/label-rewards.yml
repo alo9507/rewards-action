@@ -24,9 +24,12 @@ jobs:
   reward:
     runs-on: ubuntu-latest
     needs: [ get-user-config ]
+    outputs:
+      transactionHash: ${{ steps.reward.outputs.transactionHash }}
     steps:
     - uses: actions/checkout@v1
     - name: Send reward
+      id: reward
       uses: octobay/rewards-action@v1
       if: ${{ needs.get-user-config.outputs.address }}
       with:
@@ -38,6 +41,7 @@ jobs:
   
   comment_success:
     name: Commenting on success
+    if: ${{ !needs.reward.outputs.transactionHash }}
     runs-on: ubuntu-latest
     needs: [ reward ]
     steps:
@@ -45,7 +49,10 @@ jobs:
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.issue.number }}
-          body: "Thank you for reporting this issue. We have just sent you 0.001 ETH."
+          body: |
+            Thank you for reporting this issue. We have just sent you 0.001 ETH.
+            
+            Tx: ${{ needs.reward.outputs.transactionHash }}
 
   # add message when label was set by someone other then mktcode
   skip:
