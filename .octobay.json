@@ -2,11 +2,13 @@
   "labelRewards": [
     {
       "name": "critical-bug",
-      "value": "1000000000000000"
+      "value": "1000000000000000",
+      "comment": "Thank you for this bug report! We have sent 0.001 ETH to you."
     },
     {
       "name": "awesome-idea",
-      "value": "1000000000000000"
+      "value": "1000000000000000",
+      "comment": "What an idea! Thanks for the inspiration. We have sent 0.001 ETH to you."
     }
   ]
 }
