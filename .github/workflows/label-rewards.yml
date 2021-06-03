@@ -49,7 +49,7 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-            ${{ ISSUE_AUTHOR }}, you need to configure an Ethereum address in order to receive a reward for creating this helpful issue.
+            ${{ env.ISSUE_AUTHOR }}, you need to configure an Ethereum address in order to receive a reward for creating this helpful issue.
             Create a [.octobay.json](https://github.com/${{ ISSUE_AUTHOR }}/${{ ISSUE_AUTHOR }}/new/main?filename=.octobay.json) in your profile repository.
             ```json
             {
