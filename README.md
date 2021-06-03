@@ -14,6 +14,10 @@ Currently only issue rewards (e.g. bug bounties) are possible but other features
 
 **We recommend to inform your contributors that you support Octobay Rewards. See [how we are doing it](https://github.com/Octobay/rewards-action/issues/new/choose) using [issue templates](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository).**
 
+## Example usage
+
+See our [label-rewards.yml](.github/workflows/label-rewards.yml) and [.octobay.json](.octobay.json).
+
 ## Inputs
 
 ### `to-address`
@@ -37,7 +41,3 @@ Currently only issue rewards (e.g. bug bounties) are possible but other features
 ### `transactionHash`
 
 The Ethereum transaction hash.
-
-## Example usage
-
-See our [label-rewards.yml](.github/workflows/label-rewards.yml)
